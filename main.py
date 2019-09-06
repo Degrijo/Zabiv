@@ -15,21 +15,33 @@ class Imperia: # при захвате столицы прибовлять пр�
         self.color = color
 
     def grow(self, map, imperia, SweetPussy):
+        p = 1
+        z = 1
         for x in map:
             for y in map:
                 if map[x][y] == imperia:
-                    for i in range(-5, 5):
-                        for j in range(-5, 5):
-                            if map[x + i][y + i] == SweetPussy:
-                                if x+i > 0: PussyCordsX = x+1
-                                elif x+i < 0: PussyCordsX = x-1
-                                else: PussyCordsX = x
-                                if y+i > 0: PussyCordsY = y+1
-                                elif y+i < 0: PussyCordsY = y-1
-                                else: PussyCordsY = y
+
+                    for i in range(-p, p):
+                        for j in range(-z, z):
+                            if map[x + i][y + j] == SweetPussy:
+                                if x+i > 0:
+                                    PussyCordsX = x+1
+                                elif x+i < 0:
+                                    PussyCordsX = x-1
+                                else:
+                                    PussyCordsX = x
+                                if y+i > 0:
+                                    PussyCordsY = y+1
+                                elif y+i < 0:
+                                    PussyCordsY = y-1
+                                else:
+                                    PussyCordsY = y
                                 map[PussyCordsX][PussyCordsY] == imperia
-                                break
-                            else: continue
+                                return
+                            else:
+                                p += 1
+                                z += 1
+                                continue
 
 
 map = [['-' for j in range(height//sqr)] for i in range(width//sqr)]

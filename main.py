@@ -13,6 +13,51 @@ class Empire:  # при захвате столицы прибовлять пр�
     def draw(self):
         pass
 
+    def grow(self, map):
+        for i in range(1, 5):
+            for x in range(-i, i):
+                for y in range(-i, i):
+                    if type(map[self.x+x][self.y+y]) == Resource:
+                        if self.x < self.x + x:
+                            Xside = self.x + 1
+                        elif self.x == self.x + x:
+                            Xside = self.x
+                        else:
+                            Xside = self.x - 1
+                        if self.y < self.y + y:
+                            Yside = self.y + 1
+                        elif self.y == self.y + y:
+                            Yside = self.y
+                        else:
+                            Yside = self.y - 1
+        if Xside and Yside:
+            map[Xside][Yside] = Empire
+
+
+            # for z in range(5):
+            #     for p in range(5):
+            #         for i in range(-p, p):
+            #             for j in range(-z, z):
+            #                 if map[x + i][y + j] == SweetPussy:
+            #                     if x+i > 0:
+            #                         PussyCordsX = x+1
+            #                     elif x+i < 0:
+            #                         PussyCordsX = x-1
+            #                     else:
+            #                         PussyCordsX = x
+            #                     if y+i > 0:
+            #                         PussyCordsY = y+1
+            #                     elif y+i < 0:
+            #                         PussyCordsY = y-1
+            #                     else:
+            #                         PussyCordsY = y
+            #                     map[PussyCordsX][PussyCordsY] == imperia
+            #                     return
+            #                 else:
+            #                     p += 1
+            #                     z += 1
+            #                     continue
+
 
 class Resource:
     def __init__(self, x, y, power):
@@ -22,35 +67,6 @@ class Resource:
 
     def draw(self):
         pass
-
-    def grow(self, map, imperia, SweetPussy):
-        p = 1
-        z = 1
-        for x in map:
-            for y in map:
-                if map[x][y] == imperia:
-
-                    for i in range(-p, p):
-                        for j in range(-z, z):
-                            if map[x + i][y + j] == SweetPussy:
-                                if x+i > 0:
-                                    PussyCordsX = x+1
-                                elif x+i < 0:
-                                    PussyCordsX = x-1
-                                else:
-                                    PussyCordsX = x
-                                if y+i > 0:
-                                    PussyCordsY = y+1
-                                elif y+i < 0:
-                                    PussyCordsY = y-1
-                                else:
-                                    PussyCordsY = y
-                                map[PussyCordsX][PussyCordsY] == imperia
-                                return
-                            else:
-                                p += 1
-                                z += 1
-                                continue
 
 
 class Game:

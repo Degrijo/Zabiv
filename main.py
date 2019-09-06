@@ -1,6 +1,5 @@
 import pygame
 from random import randint, choice
-from time import sleep
 
 
 class Empire:  # при захвате столицы прибовлять процент от мощи
@@ -15,21 +14,26 @@ class Empire:  # при захвате столицы прибовлять пр�
     def draw(self):
         pygame.draw.rect(self.win, self.color, (self.x*self.win_sqr, self.y*self.win_sqr, self.win_sqr, self.win_sqr))
 
+    def has_self(self, square):
+        for obj in square:
+            if obj == self:
+                return True
 
     def has_resource(self, square):
-        check = False
         for obj in square:
             if type(obj) == Resource:
-                check = True
-            elif obj == self:
-                return False
-        return check
+                return True
+
+    def has_enemy(self, square):
+        for obj in square:
+            if type(obj) == Empire and obj != self:
+                return True
 
     def grow(self, map):
         for i in range(1, 5):
             for x in range(-i, i):
                 for y in range(-i, i):
-                    if self.has_resource(map[self.x+x][self.y+y]):
+                    if self.has_resource(map[self.x+x][self.y+y]) and not self.has_self(map[self.x+x][self.y+y]):
                         if self.x < self.x + x:
                             map[self.x + 1][self.y].append(Empire)
                             return
@@ -44,7 +48,7 @@ class Empire:  # при захвате столицы прибовлять пр�
                             return
 
 
-class Resource:
+class ResourceSqr:
     def __init__(self, x, y, power, parent):
         self.x = x
         self.y = y
@@ -60,6 +64,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Zabiv")
+        self.clock = pygame.time.Clock()
         self.run = True
         self.win_width = 1000
         self.win_height = 500
@@ -91,6 +96,7 @@ class Game:
         self.spawn_res()
         self.spawn_empires()
         while self.run:
+            self.clock.tick(50)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
@@ -100,7 +106,6 @@ class Game:
                     for obj in self.map[x][y]:
                         obj.draw()
             pygame.display.update()
-            sleep(5)
 
 
 game = Game()

@@ -22,6 +22,7 @@ class Resource:
 
     def draw(self):
         pass
+
     def grow(self, map, imperia, SweetPussy):
         for x in map:
             for y in map:
@@ -38,7 +39,6 @@ class Resource:
                                 map[PussyCordsX][PussyCordsY] == imperia
                                 break
                             else: continue
-
 
 
 class Game:

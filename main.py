@@ -30,16 +30,14 @@ class Empire:  # при захвате столицы прибовлять пр�
                         if self.x < self.x + x:
                             map[self.x + 1][self.y].append(Empire)
                             return
-                        elif self.x > selfx + x:
+                        elif self.x > self.x + x:
                             map[self.x - 1][self.y].append(Empire)
                             return
                         elif self.y < self.y + y:
-                            Yside = self.y + 1
-                            map[Xside][Yside].append(Empire)
+                            map[self.x][self.y + 1].append(Empire)
                             return
                         elif self.y > self.y + y:
-                            Yside = self.y - 1
-                            map[Xside][Yside].append(Empire)
+                            map[self.x][self.y - 1].append(Empire)
                             return
 
 

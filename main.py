@@ -4,14 +4,17 @@ from time import sleep
 
 
 class Empire:  # при захвате столицы прибовлять процент от мощи
-    def __init__(self, x, y):
+    def __init__(self, x, y, parent):
         self.power = 0
         self.x = x
         self.y = y
-        self.color = (0, 0, 0)
+        self.win_sqr = parent.win_sqr
+        self.color = (255, 255, 255)
+        self.win = parent.win
 
     def draw(self):
-        pass
+        pygame.draw.rect(self.win, self.color, (self.x*self.win_sqr, self.y*self.win_sqr, self.win_sqr, self.win_sqr))
+
 
     def has_resource(self, square):
         check = False
@@ -42,13 +45,15 @@ class Empire:  # при захвате столицы прибовлять пр�
 
 
 class Resource:
-    def __init__(self, x, y, power):
+    def __init__(self, x, y, power, parent):
         self.x = x
         self.y = y
         self.power = power
+        self.win_sqr = parent.win_sqr
+        self.win = parent.win
 
     def draw(self):
-        pass
+        pygame.draw.rect(self.win, (0, 255, 0), (self.x*self.win_sqr, self.y*self.win_sqr, self.win_sqr, self.win_sqr))
 
 
 class Game:
@@ -69,13 +74,13 @@ class Game:
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if randint(1, 100) <= self.res_prob:
-                    self.map[x][y].append(Resource(x, y, randint(1, 100)))
+                    self.map[x][y].append(Resource(x, y, randint(1, 100), self))
 
     def spawn_empires(self):
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if not self.map[x][y] and randint(1, 100) <= self.res_imp:
-                    self.map[x][y].append(Empire(x, y))
+                    self.map[x][y].append(Empire(x, y, self))
 
     def draw_empires(self):
         empire_count = len(self.empires)
@@ -90,8 +95,14 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.run = False
             self.win.fill((0, 0, 0))
-            for empire in self.empires:
-                empire.draw()
+            for x in range(len(self.map)):
+                for y in range(len(self.map[x])):
+                    for obj in self.map[x][y]:
+                        obj.draw()
+            pygame.display.update()
+            sleep(5)
 
 
+game = Game()
+game.start()
 pygame.quit()

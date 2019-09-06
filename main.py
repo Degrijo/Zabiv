@@ -13,50 +13,34 @@ class Empire:  # при захвате столицы прибовлять пр�
     def draw(self):
         pass
 
+    def has_resource(self, square):
+        check = False
+        for obj in square:
+            if type(obj) == Resource:
+                check = True
+            elif obj == self:
+                return False
+        return check
+
     def grow(self, map):
         for i in range(1, 5):
             for x in range(-i, i):
                 for y in range(-i, i):
-                    if type(map[self.x+x][self.y+y]) == Resource:
+                    if self.has_resource(map[self.x+x][self.y+y]):
                         if self.x < self.x + x:
-                            Xside = self.x + 1
-                        elif self.x == self.x + x:
-                            Xside = self.x
-                        else:
-                            Xside = self.x - 1
-                        if self.y < self.y + y:
+                            map[self.x + 1][self.y].append(Empire)
+                            return
+                        elif self.x > selfx + x:
+                            map[self.x - 1][self.y].append(Empire)
+                            return
+                        elif self.y < self.y + y:
                             Yside = self.y + 1
-                        elif self.y == self.y + y:
-                            Yside = self.y
-                        else:
+                            map[Xside][Yside].append(Empire)
+                            return
+                        elif self.y > self.y + y:
                             Yside = self.y - 1
-        if Xside and Yside:
-            map[Xside][Yside] = Empire
-
-
-            # for z in range(5):
-            #     for p in range(5):
-            #         for i in range(-p, p):
-            #             for j in range(-z, z):
-            #                 if map[x + i][y + j] == SweetPussy:
-            #                     if x+i > 0:
-            #                         PussyCordsX = x+1
-            #                     elif x+i < 0:
-            #                         PussyCordsX = x-1
-            #                     else:
-            #                         PussyCordsX = x
-            #                     if y+i > 0:
-            #                         PussyCordsY = y+1
-            #                     elif y+i < 0:
-            #                         PussyCordsY = y-1
-            #                     else:
-            #                         PussyCordsY = y
-            #                     map[PussyCordsX][PussyCordsY] == imperia
-            #                     return
-            #                 else:
-            #                     p += 1
-            #                     z += 1
-            #                     continue
+                            map[Xside][Yside].append(Empire)
+                            return
 
 
 class Resource:
@@ -81,19 +65,19 @@ class Game:
         self.res_imp = 10
         self.empires = []
         self.win = pygame.display.set_mode((self.win_width, self.win_height))
-        self.map = [['-' for j in range(self.win_height // self.win_sqr)] for i in range(self.win_width // self.win_sqr)]
+        self.map = [[[] for j in range(self.win_height // self.win_sqr)] for i in range(self.win_width // self.win_sqr)]
 
     def spawn_res(self):
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if randint(1, 100) <= self.res_prob:
-                    self.map[x][y] = Resource(x, y, randint(1, 100))
+                    self.map[x][y].append(Resource(x, y, randint(1, 100)))
 
     def spawn_empires(self):
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
-                if self.map[x][y] == '-' and randint(1, 100) <= self.res_imp:
-                    self.map[x][y] = Empire(x, y)
+                if not self.map[x][y] and randint(1, 100) <= self.res_imp:
+                    self.map[x][y].append(Empire(x, y))
 
     def draw_empires(self):
         empire_count = len(self.empires)

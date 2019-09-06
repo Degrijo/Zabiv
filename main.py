@@ -14,6 +14,22 @@ class Imperia: # при захвате столицы прибовлять пр�
         self.capital_coor = capital_coor
         self.color = color
 
+    def grow(self, map, imperia):
+
+        for x in map:
+            for y in map:
+                if map[x][y] == imperia:
+                    map[x+randint(-1,1)][y+randint(-1,1)] == imperia
+
+
+    def search(self, map, imperia):
+        for x in map:
+            for y in map:
+                if map[x][y]:
+                    for i in range(-5, 5):
+                        for j in range(-5, 5)
+                            if map[x+i][y+i] == 
+
 
 map = [['-' for j in range(height//sqr)] for i in range(width//sqr)]
 

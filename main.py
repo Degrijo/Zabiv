@@ -17,7 +17,7 @@ class Imperia: # при захвате столицы прибовлять пр�
     def grow(self, map, imperia, SweetPussy):
         for x in map:
             for y in map:
-                if map[x][y]:
+                if map[x][y] == imperia:
                     for i in range(-5, 5):
                         for j in range(-5, 5):
                             if map[x + i][y + i] == SweetPussy:
@@ -28,6 +28,7 @@ class Imperia: # при захвате столицы прибовлять пр�
                                 elif y+i < 0: PussyCordsY = y-1
                                 else: PussyCordsY = y
                                 map[PussyCordsX][PussyCordsY] == imperia
+                                break
                             else: continue
 
 

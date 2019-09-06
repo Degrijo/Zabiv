@@ -29,27 +29,31 @@ class EmpireSqr:  # при захвате столицы прибовлять п
             if type(obj) == EmpireSqr and obj != self:
                 return True
 
+    def empire_square(self, map):
+        square = []
+        if self.has_self(self):
+            square.append(self)
+        return grow(self, map)
+
     def grow(self, map):
         steps = []
-        for square in map:
-            if self.has_self(square):
-                for i in range(1, 5):
-                    for x in range(-i, i):
-                        for y in range(-i, i):
-                            if self.has_resource(map[self.x+x][self.y+y]):
-                                if self.x < self.x + x:
-                                    steps.append({'map': map[self.x + 1][self.y], 'diff': x})
-                                elif self.x > self.x + x:
-                                    steps.append({'map': map[self.x - 1][self.y], 'diff': x})
-                                elif self.y < self.y + y:
-                                    steps.append({'map': map[self.x][self.y + 1][self.y], 'diff': y})
-                                elif self.y > self.y + y:
-                                    steps.append({'map': map[self.x][self.y - 1], 'diff': y})
-                return sorted(steps, key=lambda k: k['diff'])
+        for i in range(1, 5):
+            for x in range(-i, i):
+                for y in range(-i, i):
+                    if self.has_resource(map[self.x+x][self.y+y]):
+                        if self.x < self.x + x:
+                            steps.append({'map': map[self.x + 1][self.y], 'diff': x})
+                        elif self.x > self.x + x:
+                            steps.append({'map': map[self.x - 1][self.y], 'diff': x})
+                        elif self.y < self.y + y:
+                            steps.append({'map': map[self.x][self.y + 1][self.y], 'diff': y})
+                        elif self.y > self.y + y:
+                            steps.append({'map': map[self.x][self.y - 1], 'diff': y})
+        return sorted(steps, key=lambda k: k['diff'])
 
 
     def step(self, map, steps, power):
-        for i in steps[:1]:
+        for i in steps[:1]:#итерироватся по копии
             i['map'].append(EmpireSqr)
             for j in steps:
                 if j['map'] == i['map']:

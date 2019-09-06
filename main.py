@@ -26,22 +26,31 @@ class Empire:  # при захвате столицы прибовлять пр�
         return check
 
     def grow(self, map):
-        for i in range(1, 5):
-            for x in range(-i, i):
-                for y in range(-i, i):
-                    if self.has_resource(map[self.x+x][self.y+y]):
-                        if self.x < self.x + x:
-                            map[self.x + 1][self.y].append(Empire)
-                            return
-                        elif self.x > self.x + x:
-                            map[self.x - 1][self.y].append(Empire)
-                            return
-                        elif self.y < self.y + y:
-                            map[self.x][self.y + 1].append(Empire)
-                            return
-                        elif self.y > self.y + y:
-                            map[self.x][self.y - 1].append(Empire)
-                            return
+        steps = []
+        for square in map:
+            if self.has_self(square):
+                for i in range(1, 5):
+                    for x in range(-i, i):
+                        for y in range(-i, i):
+                            if self.has_resource(map[self.x+x][self.y+y]):
+                                if self.x < self.x + x:
+                                    steps.append({'map': map[self.x + 1][self.y], 'diff': x})
+                                elif self.x > self.x + x:
+                                    steps.append({'map': map[self.x - 1][self.y], 'diff': x})
+                                elif self.y < self.y + y:
+                                    steps.append({'map': map[self.x][self.y + 1][self.y], 'diff': y})
+                                elif self.y > self.y + y:
+                                    steps.append({'map': map[self.x][self.y - 1], 'diff': y})
+                return sorted(steps, key=lambda k: k['diff'])
+
+
+    def step(self, map, steps, power):
+        for i in steps[:power]:
+            i['map'].append(Empire)
+            for j in steps:
+                if j['map'] == i['map']:
+                    steps.remove(j)
+            return
 
 
 class Resource:

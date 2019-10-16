@@ -2,13 +2,19 @@ import pygame
 from random import randint, choice
 
 
+class Empire:
+    def __init__(self, color, start_sqr, parent):
+        self.color = color
+        self.power = 0
+        self.squares = [start_sqr]
+        self.map = parent.map
+
+
 class EmpireSqr:  # при захвате столицы прибовлять процент от мощи
     def __init__(self, x, y, parent):
-        self.power = 0
         self.x = x
         self.y = y
         self.win_sqr = parent.win_sqr
-        self.color = (255, 255, 255)
         self.win = parent.win
 
     def draw(self):
@@ -58,7 +64,6 @@ class EmpireSqr:  # при захвате столицы прибовлять п
             for j in steps:
                 if j['map'] == i['map']:
                     steps.remove(j)
-            return
 
 
 class ResourceSqr:
@@ -83,7 +88,7 @@ class Game:
         self.win_height = 500
         self.win_sqr = 25
         self.res_prob = 10
-        self.res_imp = 10
+        self.emp_prob = 10
         self.empires = []
         self.win = pygame.display.set_mode((self.win_width, self.win_height))
         self.map = [[[] for j in range(self.win_height // self.win_sqr)] for i in range(self.win_width // self.win_sqr)]
@@ -97,8 +102,10 @@ class Game:
     def spawn_empires(self):
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
-                if not self.map[x][y] and randint(1, 100) <= self.res_imp:
-                    self.map[x][y].append(EmpireSqr(x, y, self))
+                if not self.map[x][y] and randint(1, 100) <= self.emp_prob:
+                    start_sqr = EmpireSqr(x, y, self)
+                    self.map[x][y].append(start_sqr)
+                    self.empires.append(Empire((255, 255, 255), start_sqr, self))
 
     def draw_empires(self):
         empire_count = len(self.empires)
